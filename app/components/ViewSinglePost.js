@@ -36,7 +36,7 @@ function ViewSinglePost(props) {
 		return () => {
 			req.cancel();
 		};
-	}, []);
+	}, [id]);
 
 	if (!isLoading && !post) {
 		return <InvalidUrl />;

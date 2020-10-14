@@ -2,6 +2,7 @@ import React, { useState, useReducer, useEffect } from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import { useImmerReducer } from "use-immer";
+import { CSSTransition } from "react-transition-group";
 import Axios from "axios";
 Axios.defaults.baseURL = "http://localhost:8080";
 
@@ -16,6 +17,7 @@ import ViewSinglePost from "./components/ViewSinglePost";
 import FlashMessages from "./components/FlashMessages";
 import Profile from "./components/Profile";
 import EditPost from "./components/EditPost";
+import Search from "./components/Search";
 import InvalidUrl from "./components/InvalidUrl";
 
 import StateContext from "./StateContext";
@@ -29,7 +31,8 @@ function Main() {
 			token: localStorage.getItem("appToken"),
 			username: localStorage.getItem("appUsername"),
 			avatar: localStorage.getItem("appAvatar")
-		}
+		},
+		isSearchOpen: false
 	};
 
 	function ourReducer(draft, action) {
@@ -43,6 +46,12 @@ function Main() {
 				break;
 			case "flashMessage":
 				draft.flashMessages.push(action.value);
+				break;
+			case "searchOpen":
+				draft.isSearchOpen = true;
+				break;
+			case "searchClose":
+				draft.isSearchOpen = false;
 				break;
 		}
 	}
@@ -93,6 +102,14 @@ function Main() {
 							<InvalidUrl />
 						</Route>
 					</Switch>
+					<CSSTransition
+						timeout={350}
+						in={state.isSearchOpen}
+						classNames="search-overlay"
+						unmountOnExit
+					>
+						<Search />
+					</CSSTransition>
 					<Footer />
 				</BrowserRouter>
 			</DispatchContext.Provider>
