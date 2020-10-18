@@ -27,7 +27,7 @@ function ProfilePosts() {
 		return () => {
 			req.cancel();
 		};
-	}, []);
+	}, [username]);
 
 	if (isLoading)
 		return (
